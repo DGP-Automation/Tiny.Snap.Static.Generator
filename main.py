@@ -34,10 +34,15 @@ def list_resources(snap_static_base_path: str, tiny_snap_static_base_path: str) 
 
 
 def main():
-    # snap_static_base_path = input(r"Enter the full path to the snap_static folder (e.g. C:\Users\i\Documents\GitHub\Snap.Static): ")
-    # tiny_snap_static_base_path = input(r"Enter the full path to the tiny_snap_static folder (e.g. C:\Users\i\Documents\GitHub\Snap.Static.Tiny): ")
-    png_task_list = list_resources(r"C:\Users\i\Documents\GitHub\Snap.Static",
-                                   r"C:\Users\i\Documents\GitHub\Snap.Static.Tiny")
+    device_runtime = os.getenv("device_runtime", "actions")
+    if device_runtime == "masterain":
+        png_task_list = list_resources(r"C:\Users\i\Documents\GitHub\Snap.Static",
+                                       r"C:\Users\i\Documents\GitHub\Snap.Static.Tiny")
+    elif device_runtime == "actions":
+        png_task_list = list_resources(r"./Snap.Static",
+                                       r"./Snap.Static.Tiny")
+    else:
+        raise ValueError("Invalid device_runtime")
     print(f"Total number of tasks: {len(png_task_list)}")
     api_index_lock = threading.Lock()
 

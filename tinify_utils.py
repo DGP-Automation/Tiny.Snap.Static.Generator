@@ -10,8 +10,8 @@ def process_img(local_img_path: str, output_folder: str, api_key: str) -> bool:
     else:
         raise ValueError("Invalid file path")
     source = tinify.from_file(local_img_path)
-    converted = source.convert(type="image/png")
-    extension = converted.result().extension
-    output_file_path = output_folder + "/" + file_name_no_extension + "." + extension
-    converted.to_file(output_file_path)
+    #converted = source.convert(type="image/png")
+    #extension = converted.result().extension
+    output_file_path = output_folder + "/" + file_name_no_extension + ".png"
+    source.to_file(output_file_path)
     return True
