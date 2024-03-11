@@ -3,8 +3,10 @@ import tinify
 import concurrent.futures
 import multiprocessing
 import threading
-from config import TINY_PNG_API_LIST
+from config.config import TINY_PNG_API_LIST
 from tinify_utils import process_img
+from tkinter import Tk
+from tkinter.filedialog import askdirectory
 
 api_index = 0
 
@@ -34,7 +36,7 @@ def list_resources(snap_static_base_path: str, tiny_snap_static_base_path: str) 
 
 
 def main():
-    device_runtime = os.getenv("device_runtime", "actions")
+    device_runtime = os.getenv("device_runtime")
     if device_runtime == "masterain":
         png_task_list = list_resources(r"C:\Users\i\Documents\GitHub\Snap.Static",
                                        r"C:\Users\i\Documents\GitHub\Snap.Static.Tiny")
@@ -42,7 +44,11 @@ def main():
         png_task_list = list_resources(r"./Snap.Static",
                                        r"./Snap.Static.Tiny")
     else:
-        raise ValueError("Invalid device_runtime")
+        root = Tk()
+        root.withdraw()
+        snap_static_base_path = askdirectory(title="Select the Folder of Snap.Static")
+        tiny_snap_static_base_path = askdirectory(title="Select the Folder of Snap.Static.Tiny")
+        png_task_list = list_resources(snap_static_base_path, tiny_snap_static_base_path)
     print(f"Total number of tasks: {len(png_task_list)}")
     api_index_lock = threading.Lock()
 

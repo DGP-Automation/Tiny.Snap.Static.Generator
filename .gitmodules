@@ -1,0 +1,4 @@
+[submodule "config"]
+	path = config
+	url = https://github.com/DGP-Studio/private-modules
+	branch = Tiny.Snap.Static.Generator
