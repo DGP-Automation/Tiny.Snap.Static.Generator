@@ -48,6 +48,8 @@ def main():
         root.withdraw()
         snap_static_base_path = askdirectory(title="Select the Folder of Snap.Static")
         tiny_snap_static_base_path = askdirectory(title="Select the Folder of Snap.Static.Tiny")
+        if any(not x for x in [snap_static_base_path, tiny_snap_static_base_path]):
+            raise ValueError("Invalid folder path")
         png_task_list = list_resources(snap_static_base_path, tiny_snap_static_base_path)
     print(f"Total number of tasks: {len(png_task_list)}")
     api_index_lock = threading.Lock()
