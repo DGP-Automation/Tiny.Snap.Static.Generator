@@ -16,12 +16,14 @@ def list_resources(snap_static_base_path: str, tiny_snap_static_base_path: str) 
     png_resource_list = []
     for root, dirs, files in os.walk(snap_static_base_path):
         for file in files:
-            if file.endswith(".png"):
+            if file.endswith(".png") or file.endswith(".jpg"):
                 png_resource_list.append({
-                    "snap_static_file": os.path.join(root, file),
+                    "snap_static_file": os.path.join(root, file).replace("\\", "/"),
                     "tiny_snap_static_file": os.path.join(root, file).replace(snap_static_base_path,
-                                                                              tiny_snap_static_base_path),
-                    "tiny_snap_static_path": root.replace(snap_static_base_path, tiny_snap_static_base_path)
+                                                                              tiny_snap_static_base_path).replace("\\",
+                                                                                                                  "/"),
+                    "tiny_snap_static_path": root.replace(snap_static_base_path,
+                                                          tiny_snap_static_base_path).replace("\\", "/")
                 })
     tiny_task_list = []
     # Check if the file exists in the tiny_snap_static_base_path
@@ -77,7 +79,7 @@ def main():
     with concurrent.futures.ThreadPoolExecutor(max_workers=num_cores) as executor:
         futures = [executor.submit(process_png_task, png_task) for png_task in png_task_list]
         for future in concurrent.futures.as_completed(futures):
-            pass
+            print(f"Task completed: {future.result()}")
 
 
 if __name__ == "__main__":
