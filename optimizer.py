@@ -3,7 +3,7 @@ from PIL import Image
 from tkinter import Tk
 from tkinter.filedialog import askdirectory
 
-TARGET_RESOLUTION = 300
+TARGET_RESOLUTION = 250
 
 
 def resize_images(directory):

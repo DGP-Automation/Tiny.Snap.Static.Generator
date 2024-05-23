@@ -61,7 +61,8 @@ def main():
         while True:
             api_key = TINY_PNG_API_LIST[api_index]
             try:
-                process_result = process_img(png_task["snap_static_file"], png_task["tiny_snap_static_path"], api_key, True)
+                process_result = process_img(png_task["snap_static_file"], png_task["tiny_snap_static_path"],
+                                             api_key, convert_to=None)
                 if process_result:
                     print(f"Successfully process file {png_task['snap_static_file']} with KEY {api_index}")
                 break
