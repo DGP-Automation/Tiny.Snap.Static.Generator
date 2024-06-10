@@ -9,6 +9,7 @@ from tkinter import Tk
 from tkinter.filedialog import askdirectory
 
 api_index = 0
+convert_type_to = None  # "webp"
 
 
 def list_resources(snap_static_base_path: str, tiny_snap_static_base_path: str) -> list:
@@ -62,7 +63,7 @@ def main():
             api_key = TINY_PNG_API_LIST[api_index]
             try:
                 process_result = process_img(png_task["snap_static_file"], png_task["tiny_snap_static_path"],
-                                             api_key, convert_to=None)
+                                             api_key, convert_to=convert_type_to)
                 if process_result:
                     print(f"Successfully process file {png_task['snap_static_file']} with KEY {api_index}")
                 break
