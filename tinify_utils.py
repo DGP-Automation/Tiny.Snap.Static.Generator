@@ -24,7 +24,7 @@ def process_img(local_img_path: str, output_folder: str, api_key: str, convert_t
     if convert_to:
         if origin_type not in convert_to:
             source = source.convert(type=f"image/{convert_to}")
-    output_file_path = output_folder + "/" + file_name.replace(origin_type, convert_to)
+    output_file_path = output_folder + "/" + file_name.replace(origin_type, convert_to if convert_to else origin_type)
     source.to_file(output_file_path)
     print(f"Compressed {local_img_path} to {output_file_path} with API key {api_key}")
     return True
