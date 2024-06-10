@@ -2,13 +2,10 @@ import os
 import tinify
 import concurrent.futures
 import multiprocessing
-import threading
-from config.config import TINY_PNG_API_LIST
-from tinify_utils import process_img
+from tinify_utils import process_img, change_api_key
 from tkinter import Tk
 from tkinter.filedialog import askdirectory
 
-api_index = 0
 convert_type_to = None  # "webp"
 
 
@@ -55,27 +52,14 @@ def main():
             raise ValueError("Invalid folder path")
         png_task_list = list_resources(snap_static_base_path, tiny_snap_static_base_path)
     print(f"Total number of tasks: {len(png_task_list)}")
-    api_index_lock = threading.Lock()
 
     def process_png_task(png_task):
-        global api_index
         while True:
-            api_key = TINY_PNG_API_LIST[api_index]
             try:
-                process_result = process_img(png_task["snap_static_file"], png_task["tiny_snap_static_path"],
-                                             api_key, convert_to=convert_type_to)
-                if process_result:
-                    print(f"Successfully process file {png_task['snap_static_file']} with KEY {api_index}")
+                process_img(png_task["snap_static_file"], png_task["tiny_snap_static_path"], convert_type_to)
                 break
             except tinify.AccountError as e:
-                print(f"API key {api_key} has reached its limit -> {e}")
-
-                with api_index_lock:
-                    if api_index >= len(TINY_PNG_API_LIST):
-                        raise RuntimeError("All API keys have reached their limit")
-                    api_index += 1
-                    api_key = TINY_PNG_API_LIST[api_index]
-                    print(f"API Key changed to {api_key} at index {api_index}")
+                change_api_key(e)
 
     num_cores = multiprocessing.cpu_count()
     with concurrent.futures.ThreadPoolExecutor(max_workers=num_cores) as executor:
