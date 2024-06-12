@@ -41,8 +41,8 @@ def change_api_key(e):
     with lock:
         global api_index
         print(f"API key {tinify.key} has reached its limit -> {e}")
+        api_index += 1
         if api_index >= len(TINY_PNG_API_LIST):
             raise RuntimeError("All API keys have reached their limit")
-        api_index += 1
         tinify.key = api_key = TINY_PNG_API_LIST[api_index]
         print(f"API Key changed to {api_key} at index {api_index}")
