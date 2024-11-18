@@ -43,10 +43,12 @@ def main():
     args = parser.parse_args()
 
     if args.source and args.output:
+        print(f"Running in command line mode, source: {args.source}, output: {args.output}")
         snap_static_base_path = args.source
         tiny_snap_static_base_path = args.output
         png_task_list = list_resources(snap_static_base_path, tiny_snap_static_base_path)
     else:
+        print(f"Running in GUI mode")
         device_runtime = os.getenv("device_runtime")
         if device_runtime == "masterain":
             png_task_list = list_resources(r"C:\Users\i\Documents\GitHub\Snap.Static",
