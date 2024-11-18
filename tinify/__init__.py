@@ -52,7 +52,7 @@ class tinify(object):
 
     def get_client(self):
         if not self._key:
-            raise AccountError('Provide an API key with tinify.key = ...')
+            raise AccountError('Tinify Key is not set.')
 
         if not self._client:
             with self._lock:

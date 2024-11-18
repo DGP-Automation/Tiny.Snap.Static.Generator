@@ -35,6 +35,7 @@ def process_img(local_img_path: str, output_folder: str, convert_to: str = None)
     output_file_path = os.path.join(output_folder, output_file_name)
 
     # Process image with Tinify
+    tinify.key = TINY_PNG_API_LIST[api_index]
     source = tinify.from_file(local_img_path)
     if convert_to and origin_type != convert_to:
         source = source.convert(type=f"image/{convert_to}")
@@ -52,5 +53,5 @@ def change_api_key(e):
         api_index += 1
         if api_index >= len(TINY_PNG_API_LIST):
             raise RuntimeError("All API keys have reached their limit")
-        tinify.key = api_key = TINY_PNG_API_LIST[api_index]
-        print(f"API Key changed to {api_key} at index {api_index}")
+        tinify.key = TINY_PNG_API_LIST[api_index]
+        print(f"API Key changed to {TINY_PNG_API_LIST[api_index]} at index {api_index}")
