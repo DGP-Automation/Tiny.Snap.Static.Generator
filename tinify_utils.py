@@ -15,15 +15,6 @@ ALLOWED_MIME = [
 lock = threading.Lock()
 api_index = 0
 
-import certifi
-import sys
-
-if hasattr(sys, '_MEIPASS'):
-    certifi_path = os.path.join(sys._MEIPASS, 'certifi', 'cacert.pem')
-else:
-    certifi_path = certifi.where()
-print(f"Using certifi path: {certifi_path}")
-
 
 def process_img(local_img_path: str, output_folder: str, convert_to: str = None) -> bool:
     # Check for allowed MIME type
@@ -45,7 +36,6 @@ def process_img(local_img_path: str, output_folder: str, convert_to: str = None)
 
     # Process image with Tinify
     source = tinify.from_file(local_img_path)
-    source.client.Client.__init__ = certifi_path
     if convert_to and origin_type != convert_to:
         source = source.convert(type=f"image/{convert_to}")
     source.to_file(output_file_path)
