@@ -36,21 +36,32 @@ def list_resources(snap_static_base_path: str, tiny_snap_static_base_path: str) 
 
 
 def main():
-    device_runtime = os.getenv("device_runtime")
-    if device_runtime == "masterain":
-        png_task_list = list_resources(r"C:\Users\i\Documents\GitHub\Snap.Static",
-                                       r"C:\Users\i\Documents\GitHub\Snap.Static.Tiny")
-    elif device_runtime == "actions":
-        png_task_list = list_resources(r"./Snap.Static",
-                                       r"./Snap.Static.Tiny")
-    else:
-        root = Tk()
-        root.withdraw()
-        snap_static_base_path = askdirectory(title="Select the Folder of Snap.Static")
-        tiny_snap_static_base_path = askdirectory(title="Select the Folder of Snap.Static.Tiny")
-        if any(not x for x in [snap_static_base_path, tiny_snap_static_base_path]):
-            raise ValueError("Invalid folder path")
+    import argparse
+    parser = argparse.ArgumentParser(description='Process images using tinify.')
+    parser.add_argument('--source', type=str, help='Path of the source directory')
+    parser.add_argument('--output', type=str, help='Path of the output directory')
+    args = parser.parse_args()
+
+    if args.source and args.output:
+        snap_static_base_path = args.source
+        tiny_snap_static_base_path = args.output
         png_task_list = list_resources(snap_static_base_path, tiny_snap_static_base_path)
+    else:
+        device_runtime = os.getenv("device_runtime")
+        if device_runtime == "masterain":
+            png_task_list = list_resources(r"C:\Users\i\Documents\GitHub\Snap.Static",
+                                           r"C:\Users\i\Documents\GitHub\Snap.Static.Tiny")
+        elif device_runtime == "actions":
+            png_task_list = list_resources(r"./Snap.Static",
+                                           r"./Snap.Static.Tiny")
+        else:
+            root = Tk()
+            root.withdraw()
+            snap_static_base_path = askdirectory(title="Select the Folder of Snap.Static")
+            tiny_snap_static_base_path = askdirectory(title="Select the Folder of Snap.Static.Tiny")
+            if any(not x for x in [snap_static_base_path, tiny_snap_static_base_path]):
+                raise ValueError("Invalid folder path")
+            png_task_list = list_resources(snap_static_base_path, tiny_snap_static_base_path)
     print(f"Total number of tasks: {len(png_task_list)}")
 
     def process_png_task(png_task):
